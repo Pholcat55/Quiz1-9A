@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz 9A, Rødsberg</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .quiz-container { width: 50%; margin: auto; padding: 20px; border: 2px solid #333; border-radius: 10px; }
+        .result { display: none; padding: 20px; font-size: 50px; font-weight: bold; }
+        .correct { color: green; }
+        .wrong { color: red; }
+        .final-result { display: none; margin-top: 20px; font-size: 24px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz</h1>
+        <div id="question"></div>
+        <div id="options"></div>
+        <button onclick="nextQuestion()">Neste</button>
+        <div id="result" class="result"></div>
+        <div id="final-result" class="final-result"></div>
+    </div>
+    
+    <script>
+        const questions = [
+            {
+                question: "Hvem er skoleskyteren i Rødsberg ungdomskole?",
+                options: ["Bruk", "Prashun", "Theodor", "Emil"],
+                correct: "Theodor"
+            },
+            {
+                question: "Hvem i Rødsberg ungdomskole er dummest?",
+                options: ["Hanad", "Barbod", "Theodor", "Suheb"],
+                correct: "Suheb"
+            },
+            {
+                question: "Hvem spiser bare frukt og nøtter ingen sjokolade?",
+                options: ["Aleksander", "Emil", "Bruk", "Theodor"],
+                correct: "Bruk"
+            },
+            {
+                question: "Hvem er 155 cm høy og ser ut som om han ble hentet rett fra steinalderen??",
+                options: ["Barbod", "Emil", "Bruk", "Theodor"],
+                correct: "Barbod"
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        
+        function loadQuestion() {
+            document.getElementById("result").style.display = "none";
+            document.getElementById("question").innerText = questions[currentQuestion].question;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            
+            questions[currentQuestion].options.forEach(option => {
+                let btn = document.createElement("button");
+                btn.innerText = option;
+                btn.onclick = () => checkAnswer(option);
+                optionsDiv.appendChild(btn);
+            });
+        }
+        
+        function checkAnswer(answer) {
+            let resultDiv = document.getElementById("result");
+            if (answer === questions[currentQuestion].correct) {
+                resultDiv.innerText = "Riktig!";
+                resultDiv.className = "result correct";
+                correctAnswers++;
+            } else {
+                resultDiv.innerText = "Feil, prøv igjen!";
+                resultDiv.className = "result wrong";
+            }
+            resultDiv.style.display = "block";
+        }
+        
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showFinalResult();
+            }
+        }
+        
+        function showFinalResult() {
+            document.querySelector(".quiz-container").innerHTML = `
+                <h1>Quiz ferdig!</h1>
+                <p>Du fikk ${correctAnswers} av ${questions.length} riktige.</p>
+                <a href="https://niggafart.com" target="_blank">Klikk meg for leaked bilder av Bruk</a>
+            `;
+        }
+        
+        loadQuestion();
+    </script>
+</body>
+</html>
